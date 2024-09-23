@@ -88,15 +88,16 @@ describe('Use Access Token', () => {
         console.log('Opening URL:', registrationPage);
         await driver.get(registrationPage);
 
-        //  interactions
-        const someElement = await driver.findElement(By.css("authenticity_token"));
-        await driver.wait(until.elementIsVisible(someElement), 10000);
-        await someElement.sendKeys('987654');
-        Thread.sleep(5000);
+      //  interactions
+      // Switch to iframe first
+        await driver.switchTo().frame(driver.findElement(By.css('iframe')));
+      // Then find the element inside the iframe
+        let someElement = await driver.wait(until.elementLocated(By.css('#firstInput')), 10000);
+        await someElement.sendKeys('987654')
 
-        const someElement1 = await driver.findElement(By.css("#Linking\ OTP"));
-        await someElement1.sendButton.click;
-        Thread.sleep(5000);
+        await driver.switchTo().frame(driver.findElement(By.css('iframe')));
+        let someElement1 = await driver.wait(until.elementLocated(By.css("#Linking\ OTP")));
+        await someElement1.sendButton.click
 
       } else {
         console.error('No registrationPage found in the response');
